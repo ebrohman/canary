@@ -6,4 +6,5 @@ module Canary
   class Error < StandardError; end
 
   autoload :Spawn, "canary/spawn"
+  autoload :Logger, "canary/logger"
 end
