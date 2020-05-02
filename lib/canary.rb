@@ -4,5 +4,6 @@ require "canary/version"
 
 module Canary
   class Error < StandardError; end
-  # Your code goes here...
+
+  autoload :Spawn, "canary/spawn"
 end
