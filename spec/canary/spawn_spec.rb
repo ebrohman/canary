@@ -4,16 +4,19 @@ require "spec_helper"
 
 RSpec.describe Canary::Spawn do
   describe ".call" do
-    subject(:result) { described_class.call(args) }
+    subject(:result) { described_class.new(args).call }
 
     let(:args) do
       {
         file_path: file_path,
-        options: options
+        options: options,
+        logger: logger
       }
     end
 
-    let(:options) { [] }
+    let(:options)   { [] }
+    let(:file)      { Tempfile.new(["log", ".csv"]) }
+    let(:logger)    { Canary::Logger.new(file_path: file.path) }
 
     context "when the file exists" do
       context "when the file is a bash script do" do
@@ -28,7 +31,7 @@ RSpec.describe Canary::Spawn do
         end
 
         context "when passed extra args" do
-          let(:options) { ["foo", "bar"] }
+          let(:options) { %w[foo bar] }
 
           it "starts the process with those args" do
             expect { result }.to output("A bash script foo bar\n").to_stdout_from_any_process
@@ -48,11 +51,21 @@ RSpec.describe Canary::Spawn do
         end
 
         context "when passed extra args" do
-          let(:options) { ["foo", "bar" ] }
+          let(:options) { %w[foo bar] }
 
           it "starts the process with those args" do
             expect { result }.to output("I spawned a Ruby process foo bar\n").to_stdout_from_any_process
           end
+        end
+      end
+
+      describe "operation logging" do
+        let(:file_path) { File.expand_path("../fixtures/test_spawn", File.dirname(__FILE__)) }
+
+        it "logs to the test log" do
+          expect(logger).to receive(:log).with(String)
+
+          result
         end
       end
     end
