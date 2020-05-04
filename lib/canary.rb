@@ -7,6 +7,7 @@ module Canary
 
   autoload :CreateFile, "canary/create_file"
   autoload :DeleteFile, "canary/delete_file"
+  autoload :MakeRequest, "canary/make_request"
   autoload :ModifyFile, "canary/modify_file"
   autoload :Spawn, "canary/spawn"
   autoload :Logger, "canary/logger"
