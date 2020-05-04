@@ -11,4 +11,8 @@ module Canary
   autoload :ModifyFile, "canary/modify_file"
   autoload :Spawn, "canary/spawn"
   autoload :Logger, "canary/logger"
+
+  def self.root
+    File.dirname __dir__
+  end
 end
