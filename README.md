@@ -1,39 +1,50 @@
+
 # Canary
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/canary`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'canary'
+This code is a standard Ruby gem and can be installed by manually building gem the after cloning the repo and then installing the .gem file
+```
+  $ cd canary
+  $ bundle
+  $ gem build canary.gemspec
+  $ gem install canary-0.1.0.gem
 ```
 
-And then execute:
+This gem was developed and tested against ruby `2.6.5`.  I cannot guarantee other ruby versions will work, but they likely will.  I use `rvm` to manage rubies.
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install canary
+## Tests
+There are a suite of unit tests for the various commands which can be invoked by running `$ rake spec` from inside the project root.
 
 ## Usage
 
-TODO: Write usage instructions here
+The gem, once installed will create an executable called `canary` and add it to your PATH.  All of the features are executable as a subcommand of `canary`.
+E.g. - `$ canary create -f /path/to/file`
 
-## Development
+The CLI uses the gem `Thor` as an options parser and for documentation.  Each command can be introspected with `canary help <command>` to see required arguments and optional arguments.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Features
+  - File creation
+      -  `$ canary help create` #docs
+      - `$ canary create -f <file-path>` #example
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+- File modification
+    - `$ canary help modify` #docs
+    - `$ canary modify -f <file-path> -d <data>` #example
 
-## Contributing
+- File deletion
+    - `$ canary help delete` #docs
+    - `$ canary delete -f <file-path>` #example
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/canary.
+- Network Request
+    - `$ canary help request` #docs
+    - `$ canary request --host <host> --path <path>`
 
-## License
+- Process start
+    - `$ canary help spawn` #docs
+    - `$ canary spawn -f <file-path> --options <process args>` #example
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+## Logging
+Each command logs pertinent data to a log file, the path of which is taken from the ENV,
+e.g. `LOG_FILE=/path/to/file canary request ...`.
+If no log file is present in the ENV, canary will log to the default log file inside the project at `log/telemetry.csv`
